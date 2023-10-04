@@ -1,0 +1,51 @@
+groups:
+- name: all
+  jobs:
+  - build-and-push-docker-image
+  - deploy-comcast-region
+  - deploy-foxtel-region
+
+resources:
+- name: gdt-testing-phase
+  type: git
+  webhook_token: ((ghes-service-account.webhook-token))
+  source:
+    uri: git@github.comcast.com:mahmed548/gdt-testing-phase.git
+    branch: main
+    private_key: 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
+    
+- name: cpt-gdt-hello-world-docker-image
+  type: docker-image
+  check_every: 168h
+  source:
+    repository: hub.comcast.net/svc-rdk-analytics-gdt-artifact/hello-world-dev
+    username: ((serviceaccount.username))
+    password: ((serviceaccount.password))
+    
+jobs:
+- name: build-and-push-docker-image
+  serial: false
+  plan:
+  - get: gdt-testing-phase
+    trigger: true
+  - task: jar-build-gdt
+    file: gdt-testing-phase/ci/tasks/maven_build.yml
+  - put: cpt-gdt-hello-world-docker-image
+    params:
+      build: gdt-testing-phase/
+- name: deploy-comcast-region
+  serial: false
+  plan:
+  - get: gdt-testing-phase
+    passed: [build-and-push-docker-image]
+    trigger: true
+  - task: deploy
+    file: gdt-testing-phase/ci/tasks/comcast_deploy.yml
+- name: deploy-foxtel-region
+  serial: false
+  plan:
+  - get: gdt-testing-phase
+    passed: [build-and-push-docker-image]
+    trigger: true
+  - task: deploy
+    file: gdt-testing-phase/ci/tasks/foxtel_deploy.yml

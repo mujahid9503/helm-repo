@@ -1,2 +1,1 @@
-# helmrepo# helm-repo
-# helm-charts
+# gdt-testing-phase-demo
