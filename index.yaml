@@ -3,12 +3,12 @@ entries:
   helmchart:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2023-10-04T20:20:27.8214559+05:30"
+    created: "2023-10-04T20:42:45.0726206+05:30"
     description: A Helm chart for Kubernetes
     digest: 209f5f5ecee815af3ac5da14b88eb3766226b5e70de0e3496351366f5eb5a99e
     name: helmchart
     type: application
     urls:
-    - https://github.com/mujahid9503/helm-repo.git/helm/helmchart-0.1.0.tgz
+    - https://github.com/mujahid9503/helm-repo.git/helmchart-0.1.0.tgz
     version: 0.1.0
-generated: "2023-10-04T20:20:27.8202135+05:30"
+generated: "2023-10-04T20:42:45.0720324+05:30"
